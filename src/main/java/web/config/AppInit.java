@@ -1,6 +1,10 @@
 package web.config;
 
+import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 
 public class AppInit extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
@@ -16,5 +20,14 @@ public class AppInit extends AbstractAnnotationConfigDispatcherServletInitialize
     @Override
     protected String[] getServletMappings() {
         return new String[]{"/"};
+    }
+
+    @Override
+    public void onStartup(ServletContext servletContext) throws ServletException {
+        super.onStartup(servletContext);
+
+        CharacterEncodingFilter encodingFilter = new CharacterEncodingFilter("UTF-8", true, true);
+        servletContext.addFilter("encodingFilter", encodingFilter)
+                .addMappingForUrlPatterns(null, false, "/*");
     }
 }
